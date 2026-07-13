@@ -1,1 +1,55 @@
-yhbnkbkvhm bjmvjhhvhkjhhk
+{
+  "name": "హక్ మేరా - మీ హక్కులు మీకు",
+  "short_name": "హక్ మేరా",
+  "description": "మీకు ఏ government schemes దొరుకుతాయో 2 నిమిషాల్లో తెలుసుకోండి",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0A1628",
+  "theme_color": "#FF6B1A",
+  "orientation": "portrait-primary",
+  "lang": "te",
+  "categories": ["government", "utilities", "finance"],
+  "icons": [
+    {
+      "src": "icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Schemes వెతుకు",
+      "short_name": "వెతుకు",
+      "description": "నేరుగా scheme search కి వెళ్ళు",
+      "url": "/index.html?action=search",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
+    }
+  ]
+}
+
