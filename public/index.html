@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>హక్ మేరా · మీ హక్కు మీకు తెలుసా?</title>
+
+<!-- PWA Meta Tags -->
+<meta name="theme-color" content="#FF6B1A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="హక్ మేరా">
+<meta name="description" content="మీకు ఏ government schemes దొరుకుతాయో 2 నిమిషాల్లో తెలుసుకోండి">
+
+<!-- Open Graph (WhatsApp share preview) -->
+<meta property="og:title" content="హక్ మేరా — మీ హక్కులు మీకు తెలుసా?">
+<meta property="og:description" content="India లో 1000+ schemes ఉన్నాయి. మీకు ఏవి దొరుకుతాయో ఇప్పుడే తెలుసుకోండి — Free, Telugu లో.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="icons/icon-512.png">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="72x72" href="icons/icon-72.png">
+<link rel="apple-touch-icon" sizes="96x96" href="icons/icon-96.png">
+<link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-96.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Telugu&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --saffron: #FF6B1A;
+  --saffron-light: #FF8C42;
+  --green: #138808;
+  --green-light: #1AAB0A;
+  --navy: #0A1628;
+  --navy-card: #0F1E35;
+  --navy-border: rgba(255,255,255,0.08);
+  --white: #F5F2EC;
+  --muted: rgba(245,242,236,0.55);
+  --rupee: #FFD700;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.telugu { font-family: 'Tiro Telugu', serif; }
+.grotesk { font-family: 'Space Grotesk', sans-serif; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,107,26,0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 80% 80%, rgba(19,136,8,0.12) 0%, transparent 60%),
+    var(--navy);
+  animation: fadeUp 0.7s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.flag-stripe {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+.stripe {
+  height: 4px;
+  border-radius: 2px;
+}
+.stripe.s { width: 28px; background: var(--saffron); }
+.stripe.w { width: 8px; background: var(--white); opacity: 0.4; }
+.stripe.g { width: 28px; background: var(--green); }
+
+.hero-badge {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  font-family: 'Tiro Telugu', serif;
+  font-size: clamp(2.8rem, 10vw, 5rem);
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+  background: linear-gradient(135deg, var(--white) 40%, var(--saffron));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-sub-te {
+  font-family: 'Tiro Telugu', serif;
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+.hero-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,107,26,0.12);
+  border: 1px solid rgba(255,107,26,0.25);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.82rem;
+  color: var(--saffron-light);
+  font-weight: 600;
+  margin: 1rem 0 2rem;
+}
+
+.btn-start {
+  background: linear-gradient(135deg, var(--saffron), #FF9E3D);
+  color: #0A1628;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0.95rem 2.4rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 24px rgba(255,107,26,0.35);
+}
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(255,107,26,0.45); }
+.btn-start:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+
+/* ── QUIZ ── */
+.quiz-wrap {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 2rem 1.4rem 5rem;
+  animation: fadeUp 0.5s ease both;
+}
+
+.q-progress {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 2rem;
+}
+.q-pip {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--navy-border);
+  transition: background 0.3s ease;
+}
+.q-pip.done { background: var(--green-light); }
+.q-pip.active { background: var(--saffron); }
+
+.q-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.q-text {
+  font-family: 'Tiro Telugu', serif;
+  font-size: 1.45rem;
+  line-height: 1.45;
+  margin-bottom: 1.5rem;
+  color: var(--white);
+}
+
+.q-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.q-opt {
+  background: var(--navy-card);
+  border: 1.5px solid var(--navy-border);
+  border-radius: 14px;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  text-align: left;
+  color: var(--white);
+  font-family: 'Tiro Telugu', serif;
+  font-size: 1rem;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.q-opt:hover { border-color: var(--saffron); background: rgba(255,107,26,0.07); }
+.q-opt.selected { border-color: var(--saffron); background: rgba(255,107,26,0.12); }
+.q-opt:focus-visible { outline: 2px solid var(--saffron); outline-offset: 2px; }
+
+.q-opt-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+.q-input {
+  width: 100%;
+  background: var(--navy-card);
+  border: 1.5px solid var(--navy-border);
+  border-radius: 14px;
+  padding: 0.9rem 1.2rem;
+  color: var(--white);
+  font-family: 'Tiro Telugu', serif;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.q-input:focus { border-color: var(--saffron); }
+.q-input::placeholder { color: var(--muted); }
+
+.btn-next-q {
+  width: 100%;
+  margin-top: 1.3rem;
+  background: var(--saffron);
+  color: #0A1628;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.85rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.btn-next-q:disabled { opacity: 0.3; cursor: not-allowed; }
+.btn-next-q:not(:disabled):hover { opacity: 0.9; }
+
+/* ── LOADING ── */
+.loading-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  text-align: center;
+  padding: 2rem;
+}
+.loader-ring {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,107,26,0.2);
+  border-top-color: var(--saffron);
+  animation: spin 0.85s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .loader-ring { animation-duration: 2s; } }
+.loading-te {
+  font-family: 'Tiro Telugu', serif;
+  font-size: 1.1rem;
+  color: var(--muted);
+}
+
+/* ── RESULTS ── */
+.results-wrap {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 2rem 1.4rem 5rem;
+  animation: fadeUp 0.6s ease both;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.results-count {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--saffron);
+  line-height: 1;
+}
+.results-count-label {
+  font-family: 'Tiro Telugu', serif;
+  font-size: 1rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+}
+.results-total-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255,215,0,0.1);
+  border: 1px solid rgba(255,215,0,0.2);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--rupee);
+  margin-top: 0.8rem;
+}
+
+.scheme-card {
+  background: var(--navy-card);
+  border: 1px solid var(--navy-border);
+  border-radius: 18px;
+  padding: 1.4rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s ease;
+}
+.scheme-card:hover { border-color: rgba(255,107,26,0.3); }
+
+.scheme-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+.scheme-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.scheme-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+}
+.scheme-category {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+.scheme-benefit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255,215,0,0.09);
+  border-radius: 8px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--rupee);
+  margin-bottom: 0.8rem;
+}
+
+.scheme-desc {
+  font-family: 'Tiro Telugu', serif;
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 0.9rem;
+}
+
+.scheme-docs {
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.9rem;
+}
+.scheme-docs-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-light);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.scheme-doc-item {
+  font-family: 'Tiro Telugu', serif;
+  font-size: 0.88rem;
+  color: var(--white);
+  padding: 0.2rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.doc-dot { color: var(--green-light); flex-shrink: 0; margin-top: 0.15rem; }
+
+.scheme-where {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.btn-restart {
+  width: 100%;
+  margin-top: 2rem;
+  background: transparent;
+  border: 1.5px solid var(--navy-border);
+  color: var(--muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.8rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-restart:hover { border-color: var(--saffron); color: var(--saffron); }
+
+/* ── ERROR ── */
+.error-wrap {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 2rem;
+}
+.error-wrap p { color: var(--muted); font-family: 'Tiro Telugu', serif; }
+
+[hidden] { display: none !important; }
+
+@media (max-width: 420px) {
+  .hero h1 { font-size: 2.6rem; }
+  .q-text { font-size: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section id="heroSec">
+  <div class="hero">
+    <div class="flag-stripe">
+      <div class="stripe s"></div>
+      <div class="stripe w"></div>
+      <div class="stripe g"></div>
+    </div>
+    <p class="hero-badge">మీ హక్కు · మీకు తెలుసా?</p>
+    <h1 class="telugu">హక్ మేరా</h1>
+    <p class="hero-sub-te">మీకు ఏ government schemes దొరుకుతాయో<br>2 నిమిషాల్లో తెలుసుకోండి</p>
+    <div class="hero-stat">
+      <span>🇮🇳</span>
+      <span>1,000+ schemes · 50 కోట్ల+ eligible Indians</span>
+    </div>
+    <button class="btn-start" id="heroStart">నా హక్కులు తెలుసుకో →</button>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quizSec" hidden>
+  <div class="quiz-wrap">
+    <div class="q-progress" id="qProgress"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.3rem;">
+      <button id="qBack" style="background:none;border:none;color:rgba(245,242,236,0.55);cursor:pointer;font-size:0.9rem;padding:0.3rem 0;display:flex;align-items:center;gap:0.4rem;font-family:Tiro Telugu,serif;transition:color 0.15s;" hidden>← వెనక్కి</button>
+      <p class="q-label" id="qLabel" style="margin:0;">Question 1 of 9</p>
+    </div>
+    <p class="q-text telugu" id="qText"></p>
+    <div id="qBody"></div>
+    <button class="btn-next-q" id="qNext" disabled>తర్వాత →</button>
+  </div>
+</section>
+
+<!-- LOADING -->
+<section id="loadingSec" hidden>
+  <div class="loading-wrap">
+    <div class="loader-ring"></div>
+    <p class="loading-te" id="loadingMsg">మీ సమాచారం చదువుతున్నాం…</p>
+    <p style="font-size:0.8rem; color:var(--muted);">మీకు సరిపడే schemes వెతుకుతున్నాం</p>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="resultsSec" hidden>
+  <div class="results-wrap">
+    <div class="results-header">
+      <div class="results-count" id="schemeCount">0</div>
+      <div class="results-count-label telugu">schemes మీకు దొరుకుతాయి</div>
+      <div class="results-total-value" id="totalValue"></div>
+    </div>
+    <div id="schemesList"></div>
+    <div style="background:rgba(255,107,26,0.07);border:1px solid rgba(255,107,26,0.18);border-radius:12px;padding:0.9rem 1rem;margin-top:1.8rem;font-family:Tiro Telugu,serif;font-size:0.82rem;color:rgba(245,242,236,0.6);line-height:1.6;">
+  ⚠️ ఈ సమాచారం AI ద్వారా generate అయింది — reference కోసం మాత్రమే. Scheme amounts, eligibility మారవచ్చు. Apply చేయడానికి ముందు official government website లేదా సంబంధిత office లో confirm చేయండి.
+</div>
+<button class="btn-restart" id="restartBtn">🔄 మళ్ళీ మొదలుపెట్టు</button>
+  </div>
+</section>
+
+<!-- ERROR -->
+<section id="errorSec" hidden>
+  <div class="error-wrap">
+    <p style="font-size:2rem;">⚠️</p>
+    <p id="errorMsg" class="telugu">ఏదో తేడా అయింది. మళ్ళీ try చేయండి.</p>
+    <button class="btn-start" id="errorRetry">మళ్ళీ try చేయి</button>
+  </div>
+</section>
+
+<script>
+(function(){
+  const questions = [
+    {
+      key: 'state',
+      text: 'మీరు ఏ రాష్ట్రంలో ఉంటున్నారు?',
+      type: 'options',
+      options: [
+        { icon: '🌾', label: 'ఆంధ్రప్రదేశ్' },
+        { icon: '🌿', label: 'తెలంగాణ' },
+        { icon: '🌴', label: 'తమిళనాడు' },
+        { icon: '🏔️', label: 'ఉత్తర్ ప్రదేశ్' },
+        { icon: '🌻', label: 'మహారాష్ట్ర' },
+        { icon: '📍', label: 'వేరే రాష్ట్రం' }
+      ]
+    },
+    {
+      key: 'income',
+      text: 'మీ కుటుంబ వార్షిక ఆదాయం ఎంత?',
+      type: 'options',
+      options: [
+        { icon: '🏠', label: '₹1 లక్షకు తక్కువ' },
+        { icon: '🏡', label: '₹1–3 లక్షల మధ్య' },
+        { icon: '🏘️', label: '₹3–6 లక్షల మధ్య' },
+        { icon: '🏢', label: '₹6 లక్షలకు పైన' }
+      ]
+    },
+    {
+      key: 'occupation',
+      text: 'మీ వృత్తి ఏమిటి?',
+      type: 'options',
+      options: [
+        { icon: '🌾', label: 'రైతు / వ్యవసాయ కూలీ' },
+        { icon: '🏗️', label: 'నిర్మాణ కూలీ / రోజువారీ కూలీ' },
+        { icon: '🛒', label: 'చిన్న వ్యాపారం / దుకాణం' },
+        { icon: '💼', label: 'ప్రైవేట్ ఉద్యోగి' },
+        { icon: '🏛️', label: 'ప్రభుత్వ ఉద్యోగి' },
+        { icon: '🏠', label: 'గృహిణి / నిరుద్యోగి' }
+      ]
+    },
+    {
+      key: 'age',
+      text: 'మీ వయసు ఎంత?',
+      type: 'options',
+      options: [
+        { icon: '📚', label: '18 కంటే తక్కువ' },
+        { icon: '👩', label: '18–35 సంవత్సరాలు' },
+        { icon: '👨', label: '36–60 సంవత్సరాలు' },
+        { icon: '👴', label: '60 సంవత్సరాలకు పైన' }
+      ]
+    },
+    {
+      key: 'gender',
+      text: 'మీరు?',
+      type: 'options',
+      options: [
+        { icon: '👩', label: 'స్త్రీ' },
+        { icon: '👨', label: 'పురుషుడు' },
+        { icon: '🌈', label: 'తృతీయ లింగం' }
+      ]
+    },
+    {
+      key: 'caste',
+      text: 'మీ కులం / వర్గం?',
+      type: 'options',
+      options: [
+        { icon: '📋', label: 'SC (షెడ్యూల్డ్ కులం)' },
+        { icon: '📋', label: 'ST (షెడ్యూల్డ్ తెగ)' },
+        { icon: '📋', label: 'OBC (ఇతర వెనుకబడిన వర్గం)' },
+        { icon: '📋', label: 'జనరల్ / ఇతర' }
+      ]
+    },
+    {
+      key: 'housing',
+      text: 'మీ ఇల్లు ఎలా ఉంది?',
+      type: 'options',
+      options: [
+        { icon: '🏚️', label: 'సొంత ఇల్లు లేదు / అద్దె ఇల్లు' },
+        { icon: '🏠', label: 'పాత / శిథిలమైన ఇల్లు ఉంది' },
+        { icon: '🏡', label: 'మంచి ఇల్లు ఉంది' }
+      ]
+    },
+    {
+      key: 'children',
+      text: 'మీకు పిల్లలు ఉన్నారా?',
+      type: 'options',
+      options: [
+        { icon: '👶', label: 'లేరు' },
+        { icon: '🧒', label: '1–2 పిల్లలు (school age)' },
+        { icon: '👧👦', label: '3 లేదా అంతకంటే ఎక్కువ పిల్లలు' },
+        { icon: '🎓', label: 'College వయసు పిల్లలు ఉన్నారు' }
+      ]
+    },
+    {
+      key: 'special',
+      text: 'మీ కుటుంబంలో ఇవేమైనా వర్తిస్తాయా?',
+      type: 'options',
+      options: [
+        { icon: '♿', label: 'వికలాంగత (disability) ఉంది' },
+        { icon: '👩‍🦳', label: 'విధవ / విడాకులు' },
+        { icon: '🌾', label: 'రైతు చనిపోయారు' },
+        { icon: '✅', label: 'పై వేటూ వర్తించవు' }
+      ]
+    }
+  ];
+
+  let current = 0;
+  const answers = {};
+
+  const $ = id => document.getElementById(id);
+
+  function showSection(name) {
+    ['heroSec','quizSec','loadingSec','resultsSec','errorSec'].forEach(id => {
+      $(id).hidden = (id !== name);
+    });
+  }
+
+  $('heroStart').onclick = () => { showSection('quizSec'); renderQ(); };
+  $('restartBtn').onclick = restart;
+  $('errorRetry').onclick = restart;
+
+  function restart() {
+    current = 0;
+    Object.keys(answers).forEach(k => delete answers[k]);
+    showSection('quizSec');
+    renderQ();
+  }
+
+  function buildProgress() {
+    const bar = $('qProgress');
+    bar.innerHTML = '';
+    questions.forEach((_, i) => {
+      const pip = document.createElement('div');
+      pip.className = 'q-pip' + (i < current ? ' done' : i === current ? ' active' : '');
+      bar.appendChild(pip);
+    });
+  }
+
+  function renderQ() {
+    const q = questions[current];
+    buildProgress();
+    $('qLabel').textContent = `${current + 1} / ${questions.length}`;
+    $('qText').textContent = q.text;
+    $('qNext').disabled = true;
+
+    // Back button: show on Q2+, hide on Q1
+    const backBtn = $('qBack');
+    backBtn.hidden = (current === 0);
+
+    const body = $('qBody');
+    body.innerHTML = '';
+
+    if (q.type === 'options') {
+      const wrap = document.createElement('div');
+      wrap.className = 'q-options';
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'q-opt';
+        btn.innerHTML = `<span class="q-opt-icon">${opt.icon}</span><span>${opt.label}</span>`;
+
+        // Pre-select if user already answered this question
+        if (answers[q.key] === opt.label) {
+          btn.classList.add('selected');
+          $('qNext').disabled = false;
+        }
+
+        btn.onclick = () => {
+          wrap.querySelectorAll('.q-opt').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          answers[q.key] = opt.label;
+          $('qNext').disabled = false;
+        };
+        wrap.appendChild(btn);
+      });
+      body.appendChild(wrap);
+    }
+  }
+
+  // Back button — go to previous question
+  $('qBack').onclick = () => {
+    if (current === 0) {
+      showSection('heroSec');
+      return;
+    }
+    // Remove current answer so user starts fresh on this question
+    const prevKey = questions[current].key;
+    delete answers[prevKey];
+    current--;
+    renderQ();
+  };
+
+  // Back button hover style
+  $('qBack').onmouseover = () => { $('qBack').style.color = 'var(--saffron)'; };
+  $('qBack').onmouseout  = () => { $('qBack').style.color = 'rgba(245,242,236,0.55)'; };
+
+  $('qNext').onclick = () => {
+    current++;
+    if (current >= questions.length) {
+      showSection('loadingSec');
+      fetchSchemes();
+    } else {
+      renderQ();
+    }
+  };
+
+  const loadingMsgs = [
+    'మీ సమాచారం పరిశీలిస్తున్నాం…',
+    'Latest Central schemes search చేస్తున్నాం…',
+    'మీ రాష్ట్ర schemes తనిఖీ చేస్తున్నాం…',
+    'కొత్తగా వచ్చిన schemes కూడా చూస్తున్నాం…',
+    'మీకు సరిపడే schemes జాబితా తయారు చేస్తున్నాం…'
+  ];
+  let loadingIdx = 0, loadingTimer;
+
+  function cycleLoading() {
+    $('loadingMsg').textContent = loadingMsgs[loadingIdx % loadingMsgs.length];
+    loadingIdx++;
+    loadingTimer = setTimeout(cycleLoading, 2400);
+  }
+
+  async function fetchSchemes() {
+    cycleLoading();
+
+    const profile = Object.entries(answers).map(([k, v]) => `${k}: ${v}`).join('\n');
+    const state = answers.state || 'India';
+
+    try {
+      // Secure backend call — API key never exposed in browser
+      const res = await fetch('/api/schemes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile, state })
+      });
+
+      const data = await res.json();
+      clearTimeout(loadingTimer);
+
+      if (!res.ok) throw new Error(data.error || 'Server error');
+      if (!data.schemes || !Array.isArray(data.schemes)) throw new Error('Invalid response');
+
+      renderResults(data.schemes);
+
+    } catch(err) {
+      clearTimeout(loadingTimer);
+      console.error(err);
+      document.getElementById('errorMsg').textContent = err.message || 'ఏదో తేడా అయింది. మళ్ళీ try చేయండి.';
+      // showSection equivalent
+      ['heroSec','quizSec','loadingSec','resultsSec','errorSec'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.hidden = (id !== 'errorSec');
+      });
+    }
+  }
+
+    function renderResults(schemes) {
+    const total = schemes.length;
+    const newCount = schemes.filter(s => s.is_new).length;
+
+    $('schemeCount').textContent = total;
+    $('totalValue').innerHTML = newCount > 0
+      ? `🆕 ${newCount} కొత్త schemes సహా — ఈరోజు live data`
+      : `✅ ఈరోజు live data తో వచ్చిన results`;
+
+    const list = $('schemesList');
+    list.innerHTML = '';
+
+    schemes.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'scheme-card';
+
+      const docsHtml = (s.documents || []).map(d =>
+        `<div class="scheme-doc-item"><span class="doc-dot">▸</span><span>${d}</span></div>`
+      ).join('');
+
+      const newBadge = s.is_new
+        ? `<span style="background:rgba(26,171,10,0.15);border:1px solid rgba(26,171,10,0.3);color:#1AAB0A;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.55rem;border-radius:999px;margin-left:0.5rem;">🆕 కొత్తది</span>`
+        : '';
+
+      const applyBtn = s.apply_link
+        ? `<a href="${s.apply_link}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.4rem;background:var(--saffron);color:#0A1628;font-weight:700;font-size:0.85rem;padding:0.55rem 1.1rem;border-radius:999px;text-decoration:none;margin-top:0.9rem;transition:opacity 0.15s;">Apply చేయి →</a>`
+        : `<p style="font-size:0.82rem;color:var(--muted);margin-top:0.7rem;font-style:italic;">📍 ${s.where} లో apply చేయండి</p>`;
+
+      card.innerHTML = `
+        <div class="scheme-top">
+          <span class="scheme-icon">${s.icon || '📋'}</span>
+          <div>
+            <div class="scheme-name">${s.name}${newBadge}</div>
+            <div class="scheme-category">${s.category}</div>
+          </div>
+        </div>
+        <div class="scheme-benefit">💰 ${s.benefit}</div>
+        <p class="scheme-desc telugu">${s.description}</p>
+        <div class="scheme-docs">
+          <div class="scheme-docs-label">కావాల్సిన documents</div>
+          ${docsHtml}
+        </div>
+        ${applyBtn}
+      `;
+      list.appendChild(card);
+    });
+
+    showSection('resultsSec');
+  }
+})();
+</script>
+<!-- Install Banner -->
+<div id="installBanner" style="
+  display:none; position:fixed; bottom:0; left:0; right:0; z-index:999;
+  background:#0F1E35; border-top:1px solid rgba(255,107,26,0.3);
+  padding:1rem 1.4rem; align-items:center; gap:1rem;
+  box-shadow:0 -4px 24px rgba(0,0,0,0.4);
+">
+  <img src="icons/icon-72.png" width="44" height="44" style="border-radius:10px; flex-shrink:0;" alt="icon">
+  <div style="flex:1; min-width:0;">
+    <p style="margin:0; font-weight:700; font-size:0.9rem; color:#F5F2EC;">హక్ మేరా App Install చేయి</p>
+    <p style="margin:0.1rem 0 0; font-size:0.78rem; color:rgba(245,242,236,0.55);">Home screen మీద app లాగా వాడు — Free</p>
+  </div>
+  <button id="installBtn" style="
+    background:linear-gradient(135deg,#FF6B1A,#FF9E3D); color:#0A1628;
+    font-weight:700; font-size:0.85rem; border:none; border-radius:999px;
+    padding:0.55rem 1.1rem; cursor:pointer; white-space:nowrap; flex-shrink:0;
+  ">Install ↓</button>
+  <button id="dismissBanner" style="
+    background:none; border:none; color:rgba(245,242,236,0.4);
+    font-size:1.2rem; cursor:pointer; padding:0.2rem; flex-shrink:0;
+  ">✕</button>
+</div>
+
+<script>
+// ── Service Worker Registration ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('SW registered:', reg.scope))
+      .catch(err => console.log('SW failed:', err));
+  });
+}
+
+// ── PWA Install Banner ──
+let deferredPrompt = null;
+const banner = document.getElementById('installBanner');
+const installBtn = document.getElementById('installBtn');
+const dismissBtn = document.getElementById('dismissBanner');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show banner after 8 seconds (after user has seen the app)
+  setTimeout(() => {
+    if (deferredPrompt) {
+      banner.style.display = 'flex';
+    }
+  }, 8000);
+});
+
+installBtn && installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  banner.style.display = 'none';
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  console.log('Install outcome:', outcome);
+  deferredPrompt = null;
+});
+
+dismissBtn && dismissBtn.addEventListener('click', () => {
+  banner.style.display = 'none';
+});
+
+window.addEventListener('appinstalled', () => {
+  banner.style.display = 'none';
+  deferredPrompt = null;
+  console.log('App installed!');
+});
+
+// ── Offline detection ──
+window.addEventListener('offline', () => {
+  const bar = document.createElement('div');
+  bar.id = 'offlineBar';
+  bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:1000;background:#D97706;color:#fff;text-align:center;padding:0.5rem;font-size:0.85rem;font-family:Tiro Telugu,serif;';
+  bar.textContent = '⚠️ Internet లేదు — Basic features మాత్రమే పని చేస్తాయి';
+  document.body.prepend(bar);
+});
+
+window.addEventListener('online', () => {
+  const bar = document.getElementById('offlineBar');
+  if (bar) bar.remove();
+});
+</script>
+</body>
+</html>
