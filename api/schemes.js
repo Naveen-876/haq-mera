@@ -1,13 +1,8 @@
-// api/schemes.js — Secure Anthropic API proxy
-// Runs on Vercel serverless — API key never reaches the browser
+const GEMINI_API = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
-const ANTHROPIC_API = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-sonnet-4-6';
-
-// Simple in-memory rate limiter (resets per serverless instance)
 const rateLimitMap = new Map();
-const RATE_LIMIT = 5;        // max 5 requests
-const RATE_WINDOW = 60000;   // per 60 seconds per IP
+const RATE_LIMIT = 5;
+const RATE_WINDOW = 60000;
 
 function checkRateLimit(ip) {
   const now = Date.now();
@@ -23,7 +18,6 @@ function checkRateLimit(ip) {
 }
 
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -31,16 +25,13 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // Rate limiting
-  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress || 'unknown';
+  const ip = req.headers['x-forwarded-for']?.split(',')[0] || 'unknown';
   if (!checkRateLimit(ip)) {
-    return res.status(429).json({ error: 'చాలా requests పంపారు. కొంచెం ఆగి మళ్ళీ try చేయండి.' });
+    return res.status(429).json({ error: 'చాలా requests. కొంచెం ఆగి try చేయండి.' });
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Server configuration error' });
-  }
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: 'Server error' });
 
   try {
     const { profile, state } = req.body;
@@ -48,80 +39,45 @@ export default async function handler(req, res) {
 
     const today = new Date().toISOString().split('T')[0];
 
-    const systemPrompt = `You are a government welfare scheme expert for India with live web search. Today: ${today}.
+    const prompt = `You are a government welfare scheme expert for India. Today: ${today}.
 
-Use web_search to find: "latest government welfare schemes ${state || 'India'} 2025 2026 new launch"
+Citizen profile:
+${profile}
 
-Then return ONLY a JSON array (no markdown, no preamble) of matching schemes. Each object:
+Return ONLY a JSON array (no markdown, no preamble) of 6-8 matching central + state government welfare schemes. Each object:
 {
   "icon": "single emoji",
   "name": "scheme name in Telugu preferred",
   "category": "Telugu category (గృహ నిర్మాణం/విద్య/ఆరోగ్యం/వ్యవసాయం/పెన్షన్/మహిళా సాధికారత/యువత)",
   "benefit": "key benefit e.g. ₹2.5 లక్షలు",
-  "is_new": true if launched after Jan 2024,
+  "is_new": false,
   "description": "2-3 sentences in Telugu explaining scheme and eligibility",
   "documents": ["doc1 Telugu", "doc2 Telugu", "doc3 Telugu"],
   "where": "where to apply in Telugu",
-  "apply_link": "official URL or null"
+  "apply_link": null
 }
-Return 6-10 schemes. Mix well-known + newly launched. Prioritize high-value schemes first.`;
+Return JSON array only. No markdown.`;
 
-    const userMsg = `Citizen profile:\n${profile}\n\nReturn matching schemes as JSON array only.`;
-
-    const headers = {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-beta': 'web-search-2025-03-05'
-    };
-
-    // First call with web search tool
-    const firstRes = await fetch(ANTHROPIC_API, {
+    const res2 = await fetch(`${GEMINI_API}?key=${apiKey}`, {
       method: 'POST',
-      headers,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 1000,
-        system: systemPrompt,
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-        messages: [{ role: 'user', content: userMsg }]
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
       })
     });
 
-    const firstData = await firstRes.json();
+    const data = await res2.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) throw new Error('No response');
 
-    let finalContent = firstData.content || [];
-
-    // If Claude used web search tool, do second turn to get final JSON
-    if (firstData.stop_reason === 'tool_use') {
-      const secondRes = await fetch(ANTHROPIC_API, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          model: MODEL,
-          max_tokens: 1000,
-          system: systemPrompt,
-          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-          messages: [
-            { role: 'user', content: userMsg },
-            { role: 'assistant', content: firstData.content }
-          ]
-        })
-      });
-      const secondData = await secondRes.json();
-      finalContent = secondData.content || [];
-    }
-
-    const textBlock = finalContent.find(b => b.type === 'text');
-    if (!textBlock) throw new Error('No text in response');
-
-    const clean = textBlock.text.replace(/```json|```/g, '').trim();
+    const clean = text.replace(/```json|```/g, '').trim();
     const schemes = JSON.parse(clean);
 
     return res.status(200).json({ schemes });
 
   } catch (err) {
-    console.error('Scheme API error:', err);
+    console.error(err);
     return res.status(500).json({ error: 'ఏదో తేడా అయింది. మళ్ళీ try చేయండి.' });
   }
 }
