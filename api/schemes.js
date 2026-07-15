@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   if (!apiKey) return res.status(500).json({ error: 'API key missing' });
 
   try {
-    const { profile, state } = req.body;
+    const { profile } = req.body;
     if (!profile) return res.status(400).json({ error: 'Profile required' });
 
     const prompt = `You are a government welfare scheme expert for India. 
@@ -18,22 +18,22 @@ export default async function handler(req, res) {
 Citizen profile:
 ${profile}
 
-Return ONLY a JSON array of 6-8 matching government welfare schemes. Each object must have:
+Return ONLY a JSON array of 6-8 matching government welfare schemes. Each object:
 {
   "icon": "single emoji",
   "name": "scheme name in Telugu",
   "category": "Telugu category",
-  "benefit": "key benefit in Telugu e.g. ₹2.5 లక్షలు",
+  "benefit": "key benefit e.g. ₹2.5 లక్షలు",
   "is_new": false,
   "description": "2-3 sentences in Telugu",
   "documents": ["doc1", "doc2", "doc3"],
   "where": "where to apply in Telugu",
   "apply_link": null
 }
-Return JSON array only. No markdown. No explanation.`;
+Return JSON array only. No markdown.`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -41,8 +41,7 @@ Return JSON array only. No markdown. No explanation.`;
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 2048,
-            responseMimeType: 'application/json'
+            maxOutputTokens: 2048
           }
         })
       }
@@ -51,7 +50,7 @@ Return JSON array only. No markdown. No explanation.`;
     const data = await response.json();
 
     if (data.error) {
-      console.error('Gemini error:', data.error);
+      console.error('Gemini error:', JSON.stringify(data.error));
       return res.status(500).json({ error: data.error.message });
     }
 
