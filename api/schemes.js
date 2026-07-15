@@ -33,7 +33,7 @@ Return ONLY a JSON array of 6-8 matching government welfare schemes. Each object
 Return JSON array only. No markdown. No explanation.`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -49,7 +49,7 @@ Return JSON array only. No markdown. No explanation.`;
     );
 
     const data = await response.json();
-    
+
     if (data.error) {
       console.error('Gemini error:', data.error);
       return res.status(500).json({ error: data.error.message });
